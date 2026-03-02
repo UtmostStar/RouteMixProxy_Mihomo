@@ -1,0 +1,563 @@
+# 必须使用 Meta/Mihomo 内核
+# HTTP 代理端口
+port: 7890 
+
+# SOCKS5 代理端口
+socks-port: 7891 
+
+# Linux 和 macOS 的 redir 代理端口
+redir-port: 7892 
+
+# 允许局域网的连接
+allow-lan: true
+
+# 规则模式：Rule（规则） / Global（全局代理）/ Direct（全局直连）
+mode: Rule
+
+# 设置日志输出级别 (默认级别：silent，即不输出任何内容，以避免因日志内容过大而导致程序内存溢出）。
+# 5 个级别：silent / info / warning / error / debug。级别越高日志输出量越大，越倾向于调试，若需要请自行开启。
+log-level: silent
+# Clash 的 RESTful API
+external-controller: '127.0.0.1:9090'
+experimental:
+  ignore-resolve-fail: true
+# RESTful API 的口令
+secret: '' 
+
+# 您可以将静态网页资源（如 clash-dashboard）放置在一个目录中，clash 将会服务于 `RESTful API/ui`
+# 参数应填写配置目录的相对路径或绝对路径。
+# external-ui: folder
+
+dns:
+    enable: false
+    ipv6: false
+    default-nameserver: [223.5.5.5, 119.29.29.29, 8.8.8.8]
+    enhanced-mode: fake-ip
+    fake-ip-range: 198.18.0.1/16
+    use-hosts: true
+    nameserver: ['https://doh.pub/dns-query', 'https://dns.alidns.com/dns-query']
+    fallback: ['https://doh.dns.sb/dns-query', 'https://dns.cloudflare.com/dns-query', 'https://dns.twnic.tw/dns-query', 'tls://8.8.4.4:853']
+    fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4, 0.0.0.0/32] }
+
+tun:
+  enable: true
+  stack: system
+  auto-route: true
+  auto-detect-interface: true # 自动检测出口
+
+proxies:
+  # 这里的目的不是为了“翻墙”，而是利用拨号逻辑
+  # 我们建立两个特殊的 DIRECT 节点，分别绑定网卡
+  - name: "以太网（国内宽带）"
+    type: direct
+    interface-name: "以太网"  # 填入你刚才查到的名称
+
+  - name: "Wi-Fi（国际漫游）"
+    type: direct
+    interface-name: "Wi-Fi"   # 填入你刚才查到的名称
+
+proxy-groups:
+  - name: 流量分配
+    type: select
+    proxies:
+      - 以太网（国内宽带）
+      - Wi-Fi（国际漫游）
+
+rules:
+  # --- 域名分流示例 ---
+  - DOMAIN-SUFFIX,baidu.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjsgrzdrc31.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjsgrzdrc3s.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjsgrzdrc3z.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjsgrzdrctt.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjsgrzdrctu.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjz8yzdnc31.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjz8yzdnc3t.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjzgazdrpba.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjzgazdrpbz.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,0gr4uqmtt8y41hcjzgazdrpjt.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,112-81-125-43.dhost.00cdn.com,以太网（国内宽带）
+  - DOMAIN,113-219-145-1.ksyungslb.com,以太网（国内宽带）
+  - DOMAIN,114-236-92-129.ksyungslb.com,以太网（国内宽带）
+  - DOMAIN,180-101-74-1.ksyungslb.com,以太网（国内宽带）
+  - DOMAIN,1geadrmttge3nhcjwgazdope.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1geadrmttge3nhcjwgwzdqqe.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr3uomttgr31hcjo8yzdnco.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr3uomttgr31hcjo8yzdnpy.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr3uomttgr31hcjtgezdkcy.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr4uqmtt8y41hcjigazdqca.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr4uqmtt8y41hcjigazdqce.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr4uqmtt8y41hcjigazdqco.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr4uqmtt8y41hcjigazdqpo.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr4uqmtt8y41hcjzgwzdkqe.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj38yzdcca.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj38yzdcco.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj38yzdkca.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj38yzdkco.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj38yzdkpe.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj38yzdkpy.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj38yzdkqy.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj3gczdcpa.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj3gczdcpe.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj3gczdcpo.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcj3gczdcqy.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1gr5dgmttgha1hcttgrzdnpo.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,1graukmttga4nhcjtgozdgce.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,218-91-225-1.ksyungslb.com,以太网（国内宽带）
+  - DOMAIN,219-155-150-1.ksyungslb.com,以太网（国内宽带）
+  - DOMAIN,222-188-6-1.ksyungslb.com,以太网（国内宽带）
+  - DOMAIN,36-104-134-1.ksyungslb.com,以太网（国内宽带）
+  - DOMAIN,36-25-252-1.ksyungslb.com,以太网（国内宽带）
+  - DOMAIN,3ge3drmttga5nhcbqge3ur.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,3geauymtsgrzdnqbofa5do.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,3geauymtsgrzdnqbofa5dy.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,3geauymtsgrzdrcbzfahue.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,3geauymtsgrzdrcbzfahuk.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,4go41hcjtgazdoctqge4o.ourdvsss.com,以太网（国内宽带）
+  - DOMAIN,p-bstarstatic.akamaized.net,以太网（国内宽带）
+  - DOMAIN,p.bstarstatic.com,以太网（国内宽带）
+  - DOMAIN,upos-bstar-mirrorakam.akamaized.net,以太网（国内宽带）
+  - DOMAIN,upos-bstar1-mirrorakam.akamaized.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,acg.tv,以太网（国内宽带）
+  - DOMAIN-SUFFIX,acgvideo.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,animetamashi.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,animetamashi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,anitama.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,anitama.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,b23.tv,以太网（国内宽带）
+  - DOMAIN-SUFFIX,baka.im,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bigfun.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bigfunapp.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bili22.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bili2233.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bili23.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bili33.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biliapi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biliapi.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibili.cc,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibili.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibili.co,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibili.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibili.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibili.tv,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibiligame.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibiligame.co,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibiligame.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibilipay.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilibilipay.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilicdn1.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilicdn2.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilicdn3.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilicdn4.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilicdn5.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biligame.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biligame.co,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biligame.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biligame.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biligo.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biliimg.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biliintl.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,biliplus.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilivideo.cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilivideo.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bilivideo.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,corari.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,dreamcast.hk,以太网（国内宽带）
+  - DOMAIN-SUFFIX,dyhgames.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,hdslb.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,hdslb.com.w.kunlunhuf.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,hdslb.com.w.kunlunpi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,hdslb.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,hdslb.org,以太网（国内宽带）
+  - DOMAIN-SUFFIX,im9.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,maoercdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,mcbbs.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,mincdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,sharejoytech.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,smtcdns.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,upos-hz-mirrorakam.akamaized.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,uposdash-302-bilivideo.yfcdn.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,yo9.com,以太网（国内宽带）
+  - IP-CIDR,106.75.74.76/32,以太网（国内宽带）
+  - IP-CIDR,111.206.25.147/32,以太网（国内宽带）
+  - IP-CIDR,119.3.238.64/32,以太网（国内宽带）
+  - IP-CIDR,120.92.108.182/32,以太网（国内宽带）
+  - IP-CIDR,120.92.113.99/32,以太网（国内宽带）
+  - IP-CIDR,120.92.153.217/32,以太网（国内宽带）
+  - IP-CIDR,134.175.207.130/32,以太网（国内宽带）
+  - IP-CIDR,203.107.1.0/24,以太网（国内宽带）
+  - PROCESS-NAME,com.bilibili.app.blue,以太网（国内宽带）
+  - PROCESS-NAME,com.bilibili.app.in,以太网（国内宽带）
+  - PROCESS-NAME,com.bilibili.comic,以太网（国内宽带）
+  - PROCESS-NAME,com.bilibili.comic.intl,以太网（国内宽带）
+  - PROCESS-NAME,tv.danmaku.bili,以太网（国内宽带）
+  - PROCESS-NAME,tv.danmaku.bilibilihd,以太网（国内宽带）
+  - DOMAIN-SUFFIX,qhres.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,qhimg.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,baidu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,baidubcr.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,baidupan.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,baidupcs.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bdimg.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bdstatic.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,yunjiasu-cdn.net,以太网（国内宽带）
+  - DOMAIN,api.iplay.163.com,以太网（国内宽带）
+  - DOMAIN,apm3.music.163.com,以太网（国内宽带）
+  - DOMAIN,apm.music.163.com,以太网（国内宽带）
+  - DOMAIN,interface3.music.163.com,以太网（国内宽带）
+  - DOMAIN,interface.music.163.com,以太网（国内宽带）
+  - DOMAIN,music.163.com,以太网（国内宽带）
+  - IP-CIDR,39.105.63.80/32,以太网（国内宽带）
+  - IP-CIDR,45.254.48.1/32,以太网（国内宽带）
+  - IP-CIDR,47.100.127.239/32,以太网（国内宽带）
+  - IP-CIDR,59.111.160.195/32,以太网（国内宽带）
+  - IP-CIDR,59.111.160.197/32,以太网（国内宽带）
+  - IP-CIDR,59.111.181.35/32,以太网（国内宽带）
+  - IP-CIDR,59.111.181.38/32,以太网（国内宽带）
+  - IP-CIDR,59.111.181.60/32,以太网（国内宽带）
+  - IP-CIDR,101.71.154.241/32,以太网（国内宽带）
+  - IP-CIDR,103.126.92.132/32,以太网（国内宽带）
+  - IP-CIDR,103.126.92.133/32,以太网（国内宽带）
+  - IP-CIDR,112.13.119.17/32,以太网（国内宽带）
+  - IP-CIDR,112.13.122.1/32,以太网（国内宽带）
+  - IP-CIDR,115.236.118.33/32,以太网（国内宽带）
+  - IP-CIDR,115.236.121.1/32,以太网（国内宽带）
+  - IP-CIDR,118.24.63.156/32,以太网（国内宽带）
+  - IP-CIDR,193.112.159.225/32,以太网（国内宽带）
+  - IP-CIDR,223.252.199.66/32,以太网（国内宽带）
+  - IP-CIDR,223.252.199.67/32,以太网（国内宽带）
+  - DOMAIN-SUFFIX,feiliao.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,pstatp.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,snssdk.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,iesdouyin.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,toutiao.com,以太网（国内宽带）
+  # > CCTV
+  - DOMAIN-SUFFIX,cctv.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,cctvpic.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,livechina.com,以太网（国内宽带）
+  # > ChinaTelecom
+  - DOMAIN-SUFFIX,21cn.com,以太网（国内宽带）
+  # > DiDi
+  - DOMAIN-SUFFIX,didialift.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,didiglobal.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,udache.com,以太网（国内宽带）
+  # > HunanTV
+  - DOMAIN-SUFFIX,hitv.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,mgtv.com,以太网（国内宽带）
+  # > iQiyi
+  - DOMAIN-SUFFIX,iqiyi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,iqiyipic.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,71.am,以太网（国内宽带）
+  # > 愛奇藝台灣站 & iQIYI
+  - DOMAIN-SUFFIX,iq.com,以太网（国内宽带）
+  - DOMAIN,cache.video.iqiyi.com,以太网（国内宽带）
+  - DOMAIN,cache-video.iq.com,以太网（国内宽带）
+  - DOMAIN,intl.iqiyi.com,以太网（国内宽带）
+  - DOMAIN,intl-rcd.iqiyi.com,以太网（国内宽带）
+  - DOMAIN,intl-subscription.iqiyi.com,以太网（国内宽带）
+  # (流媒体内容，非必须，省流量可注释)
+  - DOMAIN-KEYWORD,oversea-tw.inter.iqiyi.com,以太网（国内宽带）
+  - DOMAIN-KEYWORD,oversea-tw.inter.ptqy.gitv.tv,以太网（国内宽带）
+  - IP-CIDR,103.44.56.0/22,以太网（国内宽带）,no-resolve
+  - IP-CIDR,118.26.32.0/23,以太网（国内宽带）,no-resolve
+  - IP-CIDR,118.26.120.0/24,以太网（国内宽带）,no-resolve
+  - IP-CIDR,223.119.62.225/28,以太网（国内宽带）,no-resolve
+  - IP-CIDR,23.40.242.10/32,以太网（国内宽带）,no-resolve
+  - IP-CIDR,23.40.241.251/32,以太网（国内宽带）,no-resolve
+  # > General
+  # USER-AGENT,archero*
+  # USER-AGENT,coffeecorp*
+  # USER-AGENT,Coffee%20Corp*
+  # USER-AGENT,restaurant-mobile*
+  - DOMAIN,app.adjust.com,以太网（国内宽带）
+  - DOMAIN,bdtj.tagtic.cn,以太网（国内宽带）
+  # > Alibaba
+  - DOMAIN,log.mmstat.com,以太网（国内宽带）
+  - DOMAIN,sycm.mmstat.com,以太网（国内宽带）
+  # >> Paramount+
+  - DOMAIN,pubads.g.doubleclick.net,以太网（国内宽带）
+  # > Tencent
+  - DOMAIN,fairplay.l.qq.com,以太网（国内宽带）
+  - DOMAIN,livew.l.qq.com,以太网（国内宽带）
+  - DOMAIN,vd.l.qq.com,以太网（国内宽带）
+  # > Strava
+  - DOMAIN,analytics.strava.com,以太网（国内宽带）
+  # > Umeng
+  - DOMAIN,msg.umeng.com,以太网（国内宽带）
+  - DOMAIN,msg.umengcloud.com,以太网（国内宽带）
+  # > JD
+  - DOMAIN-SUFFIX,jd.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,jd.hk,以太网（国内宽带）
+  - DOMAIN-SUFFIX,jdpay.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,360buyimg.com,以太网（国内宽带）
+  # > Kingsoft
+  - DOMAIN-SUFFIX,iciba.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ksosoft.com,以太网（国内宽带）
+  # > Meitu
+  - DOMAIN-SUFFIX,meitu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,meitudata.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,meitustat.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,meipai.com,以太网（国内宽带）
+  # > Meituan
+  - DOMAIN-SUFFIX,dianping.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,dpfile.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,meituan.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,meituan.net,以太网（国内宽带）
+  # > MI
+  - DOMAIN-SUFFIX,duokan.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,mi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,mi-img.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,miui.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,miwifi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,xiaomi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,xiaomi.net,以太网（国内宽带）
+  # > Microsoft
+  # - DOMAIN-SUFFIX,microsoft.com
+  # - DOMAIN-SUFFIX,msecnd.net
+  # - DOMAIN-SUFFIX,office.com
+  # - DOMAIN-SUFFIX,office365.com
+  # - DOMAIN-SUFFIX,s-microsoft.com
+  # - DOMAIN-SUFFIX,windows.com
+  - DOMAIN-SUFFIX,visualstudio.com,以太网（国内宽带）
+  # >> Microsoft Software Download
+  # - DOMAIN,software-download.microsoft.com
+  # - DOMAIN-KEYWORD,-microsoft-com.akamaized.net
+  # >> OneDrive
+  # - DOMAIN-SUFFIX,1drv.com
+  # - DOMAIN-SUFFIX,storage.live.com
+  # >> Outlook
+  - DOMAIN-SUFFIX,hotmail.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,outlook.com,以太网（国内宽带）
+  - DOMAIN,outlook.office365.com,以太网（国内宽带）
+  - DOMAIN,smtp.office365.com,以太网（国内宽带）
+  # >> Windows Server Update Services
+  - DOMAIN-SUFFIX,windowsupdate.microsoft.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,update.microsoft.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,windowsupdate.com,以太网（国内宽带）
+  - DOMAIN,download.microsoft.com,以太网（国内宽带）
+  - DOMAIN,wustat.windows.com,以太网（国内宽带）
+  - DOMAIN,ntservicepack.microsoft.com,以太网（国内宽带）
+  # > NetEase
+  # USER-AGENT,NeteaseMusic*
+  # USER-AGENT,%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90*
+  - DOMAIN-SUFFIX,163.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,126.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,126.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,127.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,163yun.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,lofter.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,netease.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ydstatic.com,以太网（国内宽带）
+  # > PayPal
+  # USER-AGENT,PayPal*
+  - DOMAIN-SUFFIX,paypal.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,paypal.me,以太网（国内宽带）
+  - DOMAIN-SUFFIX,paypalobjects.com,以太网（国内宽带）
+  # > Sina
+  - DOMAIN-SUFFIX,sina.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,weibo.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,weibocdn.com,以太网（国内宽带）
+  # > Sohu
+  - DOMAIN-SUFFIX,sohu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,sohucs.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,sohu-inc.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,v-56.com,以太网（国内宽带）
+  # > Sogo
+  - DOMAIN-SUFFIX,sogo.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,sogou.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,sogoucdn.com,以太网（国内宽带）
+  # > Tencent
+  - DOMAIN-SUFFIX,gtimg.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,idqqimg.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,igamecj.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,myapp.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,myqcloud.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,qq.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,qqmail.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,servicewechat.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,tencent.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,tencent-cloud.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,tenpay.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,wechat.com,以太网（国内宽带）
+  - DOMAIN,file-igamecj.akamaized.net,以太网（国内宽带）
+  - IP-CIDR,182.254.116.0/24,以太网（国内宽带）,no-resolve
+  - IP-CIDR,203.205.254.0/23,以太网（国内宽带）,no-resolve
+  # > Content Delivery Network
+  - DOMAIN-SUFFIX,ccgslb.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ccgslb.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,chinanetcenter.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,meixincdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ourdvs.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,staticdn.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,wangsu.com,以太网（国内宽带）
+  # > 本地地址和路由器地址
+  - DOMAIN-SUFFIX,acl4ssr,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ip6-localhost,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ip6-loopback,以太网（国内宽带）
+  - DOMAIN-SUFFIX,local,以太网（国内宽带）
+  - DOMAIN-SUFFIX,localhost,以太网（国内宽带）
+  - IP-CIDR,10.0.0.0/8,以太网（国内宽带）,no-resolve
+  - IP-CIDR,100.64.0.0/10,以太网（国内宽带）,no-resolve
+  - IP-CIDR,127.0.0.0/8,以太网（国内宽带）,no-resolve
+  - IP-CIDR,172.16.0.0/12,以太网（国内宽带）,no-resolve
+  - IP-CIDR,192.168.0.0/16,以太网（国内宽带）,no-resolve
+  - DOMAIN,router.asus.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,hiwifi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,leike.cc,以太网（国内宽带）
+  - DOMAIN-SUFFIX,my.router,以太网（国内宽带）
+  - DOMAIN-SUFFIX,p.to,以太网（国内宽带）
+  - DOMAIN-SUFFIX,peiluyou.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,phicomm.me,以太网（国内宽带）
+  - DOMAIN-SUFFIX,routerlogin.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,tendawifi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,zte.home,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ol.epicgames.com,以太网（国内宽带）  
+  # > Other
+  - DOMAIN-SUFFIX,cn,以太网（国内宽带）
+  - DOMAIN-SUFFIX,115.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,360in.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,51ym.me,以太网（国内宽带）
+  - DOMAIN-SUFFIX,8686c.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,99.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,abchina.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,accuweather.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,agora.io,以太网（国内宽带）
+  - DOMAIN-SUFFIX,aicoinstorge.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,air-matters.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,air-matters.io,以太网（国内宽带）
+  - DOMAIN-SUFFIX,aixifan.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,amd.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,b612.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bdatu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,beitaichufang.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,booking.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,bstatic.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,cailianpress.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,challenges.cloudflare.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,camera360.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,chaoxing.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,chaoxing.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,chinaso.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,chuimg.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,chunyu.mobi,以太网（国内宽带）
+  - DOMAIN-SUFFIX,cmbchina.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,cmbimg.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,coolapk.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ctrip.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,dfcfw.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,dji.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,docschina.org,以太网（国内宽带）
+  - DOMAIN-SUFFIX,douban.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,doubanio.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,douyu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,dxycdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,dytt8.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,eastmoney.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,eudic.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,feng.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,fengkongcloud.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,frdic.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,futu5.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,futunn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,gandi.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,gcores.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,geilicdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,getpricetag.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,gifshow.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,gitlab.xingshicloud.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,yunxiao.xingshicloud.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,godic.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,hicloud.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,hongxiu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,hostbuf.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,huxiucdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,huya.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ibm.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,idaas-test.zj31.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,infinitynewtab.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ithome.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,java.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,jianguoyun.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,jianshu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,jianshu.io,以太网（国内宽带）
+  - DOMAIN-SUFFIX,jidian.im,以太网（国内宽带）
+  - DOMAIN-SUFFIX,kaiyanapp.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,kaspersky-labs.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,keepcdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,kkmh.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,lanzous.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,luojilab.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,maoyan.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,maoyun.tv,以太网（国内宽带）
+  - DOMAIN-SUFFIX,mls-cdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,mobike.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,moke.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,mubu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,myzaker.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,nim-lang-cn.org,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ntp.org,以太网（国内宽带）
+  - DOMAIN-SUFFIX,nvidia.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,oracle.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,pms.crazysales.com.au,以太网（国内宽带）
+  - DOMAIN-SUFFIX,plex.tv,以太网（国内宽带）
+  - DOMAIN-SUFFIX,qdaily.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,qidian.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,qyer.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,qyerstatic.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,raychase.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ronghub.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ruguoapp.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,sankuai.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,scomper.me,以太网（国内宽带）
+  - DOMAIN-SUFFIX,seafile.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,sm.ms,以太网（国内宽带）
+  - DOMAIN-SUFFIX,smzdm.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,snapdrop.net,以太网（国内宽带）
+  - DOMAIN-SUFFIX,snwx.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,s-reader.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,sspai.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,subhd.tv,以太网（国内宽带）
+  - DOMAIN-SUFFIX,takungpao.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,teamviewer.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,tianyancha.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,tophub.today,以太网（国内宽带）
+  - DOMAIN-SUFFIX,uning.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,weather.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,weico.cc,以太网（国内宽带）
+  - DOMAIN-SUFFIX,weidian.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,xiachufang.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,xiaoka.tv,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ximalaya.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,xinhuanet.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,xmcdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,yangkeduo.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,yizhibo.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,zhangzishi.cc,以太网（国内宽带）
+  - DOMAIN-SUFFIX,zhihu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,zhihuishu.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,zhimg.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,zhuihd.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ip138.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,alibaba.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,alibabausercontent.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,alicdn.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,alikunlun.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,alipay.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,amap.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,autonavi.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,dingtalk.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,mxhichina.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,soku.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,taobao.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,tmall.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,tmall.hk,以太网（国内宽带）
+  - DOMAIN-SUFFIX,ykimg.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,youku.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,xiami.com,以太网（国内宽带）
+  - DOMAIN-SUFFIX,xiami.net,以太网（国内宽带）
+  
+  # --- IP 分流示例 ---
+  - IP-CIDR,192.168.1.0/24,以太网（国内宽带）
+  
+  # --- 默认余下流量走国际漫游Wi-Fi ---
+  - MATCH,Wi-Fi（国际漫游）
