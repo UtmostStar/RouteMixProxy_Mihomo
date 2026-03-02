@@ -9,7 +9,7 @@ Clash Verge下载 ： https://github.com/clash-verge-rev/clash-verge-rev
 
 方便Windows使用者身处中国大陆时，同时使用境内宽带和境外手机卡漫游。
 
-境外漫游卡推荐：中国移动香港（CMHK）、中国电信澳门（CT Macau)、中国联通香港（CUniq HK）、和记黄埔香港（3HK）、CelcomDigi等。  
+大流量境外漫游卡推荐：中国移动香港（CMHK）、中国电信澳门（CT Macau)、中国联通香港（CUniq HK）、和记黄埔香港（3HK）、CelcomDigi等。  
 
 🛠️ 快速开始  
 1. 前置准备  
