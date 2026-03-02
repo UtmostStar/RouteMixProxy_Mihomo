@@ -1,9 +1,9 @@
 # RouteMixProxy_Mihomo
-用于Mihomo的双路由器流量策略路由代理规则。  
+用于Mihomo的双路由器流量策略路由代理规则。
 
 适用于Clash Verge等基于Mihomo内核的软件。  
 
-通过利用虚拟网卡（TUN 模式），本项目实现了在 Windows 环境下，根据域名、IP 规则自动将流量分发至不同物理链路（如：以太网/Wi-Fi、国内宽带/国际漫游）的功能。
+通过利用虚拟网卡（TUN 模式），实现了在 Windows 环境下，根据域名、IP 规则自动将流量分发至不同物理链路（如：以太网/Wi-Fi、国内宽带/国际漫游）的功能。
 
 🛠️ 快速开始
 1. 前置准备
@@ -19,3 +19,8 @@
 将仓库的配置片段导入进你的 Clash 配置文件中。
 
 打开虚拟网卡（TUN 模式），选择规则代理模式。
+
+<img width="1264" height="832" alt="image" src="https://github.com/user-attachments/assets/76572371-7200-4235-b146-c92130164d0c" />
+<img width="457" height="400" alt="image" src="https://github.com/user-attachments/assets/c1f6ed83-a849-4c1d-afa1-32d78cc58cfb" />
+<img width="1060" height="673" alt="image" src="https://github.com/user-attachments/assets/79046393-c29a-4dd3-b9b5-66483a0643da" />
+<img width="1060" height="673" alt="image" src="https://github.com/user-attachments/assets/a627f5dc-c90e-4cbd-b3b4-17401a874cea" />
