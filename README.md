@@ -26,7 +26,7 @@ Clash Verge下载 ： https://github.com/clash-verge-rev/clash-verge-rev
 
 打开虚拟网卡（TUN 模式），选择规则代理模式。
 
-3. 测试
+3. 测试  
 
 打开 https://ip.skk.moe/ ，当iP138.com与IP.cn 查询网为网线连接的境内ISP，Cloudflare和IPinfo.io为Wi-Fi连接的境外卡漫游运营商，说明功能实现成功。
 
