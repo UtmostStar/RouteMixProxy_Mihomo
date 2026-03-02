@@ -7,7 +7,7 @@ Clash Verge下载 ： https://github.com/clash-verge-rev/clash-verge-rev
 
 通过利用虚拟网卡（TUN 模式），实现了在 Windows 环境下，根据域名、IP 规则自动将流量分发至不同物理链路（如：以太网/Wi-Fi、国内宽带/国际漫游）的功能。
 
-方便Windows使用者身处中国大陆时，同时使用境内宽带和境外手机卡漫游。  
+方便Windows使用者身处中国大陆时，同时使用境内宽带和境外手机卡漫游。此操作  
 
 🛠️ 快速开始  
 1. 前置准备  
