@@ -18,7 +18,7 @@ Clash Verge下载 ： https://github.com/clash-verge-rev/clash-verge-rev
 
 客户端：推荐使用 Clash Verge 或其他支持 Mihomo 内核的客户端。
 
-环境确认：以管理员权限打开 CMD，运行 netsh interface show interface 记录你的网卡准确名称。
+环境确认：以管理员权限打开 CMD，运行 netsh interface show interface 记录你的网卡准确名称，如果和仓库中代理规则的interface-name不同，请手动修改到和你的网卡相同的名称。
 
 2. 配置部署  
 
